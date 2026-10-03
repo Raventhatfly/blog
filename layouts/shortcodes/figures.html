@@ -1,0 +1,21 @@
+{{- /*
+  Multi-panel figure: images side by side, each with a short label, one shared caption.
+  {{< figures src="/images/a.jpg|/images/b.jpg" labels="(a) Before|(b) After" caption="…" >}}
+  Add wide="true" to let it extend past the text column.
+*/ -}}
+{{- $srcs := split (.Get "src") "|" }}
+{{- $labels := split (.Get "labels" | default "") "|" }}
+{{- $caption := .Get "caption" }}
+{{- $alt := .Get "alt" | default ($caption | markdownify | plainify) }}
+<figure class="figure figure-panels{{ if eq (.Get "wide") "true" }} figure-wide{{ end }}">
+  <div class="panels{{ if gt (len $srcs) 3 }} panels-many{{ end }}" style="--panels: {{ len $srcs }}">
+    {{- range $i, $s := $srcs }}
+    {{- $src := partial "resolve-src.html" (dict "src" (trim $s " ") "page" $.Page) }}
+    <div class="panel">
+      <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+      {{- with index $labels $i }}<span class="panel-label">{{ . | markdownify }}</span>{{ end }}
+    </div>
+    {{- end }}
+  </div>
+  {{- with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

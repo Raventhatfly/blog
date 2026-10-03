@@ -70,7 +70,7 @@ Display math may span several lines. To write a literal dollar sign, escape it a
 **Links:**
 
 - External: `[Bruce et al., 2024](https://arxiv.org/abs/2402.15391)`. External links open in a new tab.
-- Internal: `[another post]({{< relref "what-should-a-world-model-predict" >}})`
+- Internal: `[another post]({{< relref "robot-memory-outside-the-policy" >}})`
 
 ## Images & figures
 
@@ -94,7 +94,25 @@ For architecture diagrams, `widefigure` extends past the text column, up to 960p
 {{< widefigure src="/images/my-post/architecture.svg" caption="Full model architecture." >}}
 ```
 
-Both shortcodes also accept `alt`, `link`, and `class`. Figures are numbered automatically ("Fig. 1.", "Fig. 2.", …).
+For multi-panel figures (paper-style (a)/(b) subfigures), separate images and labels with `|`; add `wide="true"` for many panels:
+
+```markdown
+{{< figures src="/images/my-post/a.jpg|/images/my-post/b.jpg" labels="(a) Before|(b) After" caption="…" >}}
+```
+
+All figure shortcodes also accept `alt`; `figure` and `widefigure` accept `link` and `class`. Figures are numbered automatically ("Fig. 1.", "Fig. 2.", …).
+
+Long tables can be folded with raw HTML (leave blank lines around the Markdown inside):
+
+```markdown
+<details>
+<summary>Per-task results</summary>
+
+| Task | … |
+|---|---|
+
+</details>
+```
 
 *Page bundles also work:* create `content/posts/my-post/index.md` and put images next to it, then write `src="overview.png"`.
 
@@ -127,7 +145,7 @@ layouts/                  the theme (templates)
   _default/               baseof, single, list, archive, search, terms, term
   _default/_markup/       render hooks: math, images, headings, links
   partials/               header, footer, post entry, TOC, citation, …
-  shortcodes/             figure, widefigure
+  shortcodes/             figure, widefigure, figures (multi-panel)
   index.html, index.json  homepage + search index
 assets/css/               main.css (design), syntax.css (code colors)
 assets/js/                theme toggle, search
@@ -143,11 +161,7 @@ static/                   favicon, images
 
 The workflow passes the correct `baseURL` from your Pages settings, so this works for both
 `https://<username>.github.io/` (repo named `<username>.github.io`) and `https://<username>.github.io/<repo>/`.
-Still, set `baseURL` in `hugo.toml` to the final URL (see the TODO there) so local production builds match.
+`baseURL` in `hugo.toml` is set to https://raventhatfly.github.io/blog/ so local production builds match.
 You never need to commit `public/`.
 
 To upgrade Hugo in CI, change `HUGO_VERSION` in the workflow.
-
-## Demo content
-
-The three posts in `content/posts/` are placeholders for checking the layout (math, figures, tables, code). Delete them, along with `static/images/demo/`, once you have real posts.

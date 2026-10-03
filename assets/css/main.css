@@ -495,6 +495,11 @@ img { max-width: 100%; height: auto; }
 .post-content td { padding: 8px 14px; vertical-align: top; }
 .post-content tbody tr:last-child td { border-bottom: 1.5px solid var(--text); }
 .post-content tbody td { border-bottom: 1px solid var(--rule); }
+.post-content td:first-child,
+.post-content td code { white-space: nowrap; }
+/* A row whose first cell is bold-italic acts as a group label. */
+.post-content tbody td > strong > em,
+.post-content tbody td > em > strong { font-weight: 600; font-style: italic; color: var(--text-2); }
 
 /* ---- Figures ---- */
 .post-content figure,
@@ -533,6 +538,35 @@ img { max-width: 100%; height: auto; }
   transform: translateX(-50%);
 }
 .post-content .figure-wide figcaption { max-width: var(--text-width); }
+
+/* Multi-panel figures */
+.post-content .panels {
+  display: grid;
+  grid-template-columns: repeat(var(--panels, 2), minmax(0, 1fr));
+  gap: 14px;
+}
+.post-content .panel img { width: 100%; }
+.post-content .panel-label {
+  display: block; margin-top: 6px;
+  font-family: var(--font-sans); font-size: 13.5px; color: var(--text-2);
+}
+
+/* Collapsible blocks, e.g. <details><summary>Per-task results</summary> … </details> */
+.post-content details {
+  margin: 1.6em 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 0;
+  font-size: .92em;
+}
+.post-content details > summary {
+  cursor: pointer; list-style: none; user-select: none;
+  font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--text);
+}
+.post-content details > summary::-webkit-details-marker { display: none; }
+.post-content details > summary::before { content: "+"; display: inline-block; width: 1.1em; color: var(--muted); font-weight: 400; }
+.post-content details[open] > summary::before { content: "\2212"; }
+.post-content details[open] > summary { margin-bottom: .8em; }
 
 [data-theme="dark"] .post-content .figure img:not(.no-dim) { filter: brightness(.92); }
 
@@ -656,8 +690,10 @@ img { max-width: 100%; height: auto; }
   .post-content .highlight pre { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); }
   .post-content blockquote { padding-left: 16px; }
   .post-content table { font-size: 14px; }
+  .post-content th { white-space: nowrap; }
 
   .terms { columns: 1; }
+  .post-content .panels-many { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
   .archive-posts li { flex-direction: column; gap: 2px; padding: 8px 0; }
   .post-nav { grid-template-columns: 1fr; }
   .post-nav-next { grid-column: 1; text-align: left; }
