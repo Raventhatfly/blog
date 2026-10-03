@@ -1,0 +1,7 @@
+{{- with .GetTerms "tags" }}
+<ul class="tag-list">
+  {{- range . }}
+  <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+  {{- end }}
+</ul>
+{{- end }}

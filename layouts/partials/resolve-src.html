@@ -1,0 +1,11 @@
+{{- /* Resolve an image path: page-bundle resource, absolute URL, or site path (respects baseURL subpaths). */ -}}
+{{- $src := .src }}
+{{- $u := urls.Parse $src }}
+{{- if not $u.IsAbs }}
+  {{- with .page.Resources.Get $u.Path }}
+    {{- $src = .RelPermalink }}
+  {{- else }}
+    {{- if hasPrefix $src "/" }}{{ $src = relURL (strings.TrimPrefix "/" $src) }}{{ end }}
+  {{- end }}
+{{- end }}
+{{- return $src }}

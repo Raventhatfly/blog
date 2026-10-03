@@ -1,0 +1,15 @@
+<div class="archive">
+  {{- range .GroupByDate "2006" }}
+  <section class="archive-year">
+    <h2 class="archive-year-title">{{ .Key }}</h2>
+    <ul class="archive-posts">
+      {{- range .Pages }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time>
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+</div>

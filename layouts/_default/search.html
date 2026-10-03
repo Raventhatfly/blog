@@ -1,0 +1,13 @@
+{{- define "main" }}
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+</header>
+<div class="search">
+  <input id="search-input" class="search-input" type="search" placeholder="Search posts…" aria-label="Search posts" autocomplete="off" spellcheck="false" autofocus>
+  <p id="search-status" class="search-status" aria-live="polite"></p>
+  <ul id="search-results" class="search-results"></ul>
+</div>
+{{- $js := resources.Get "js/search.js" }}
+{{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end }}
+<script src="{{ $js.RelPermalink }}" data-index="{{ "index.json" | relURL }}" defer></script>
+{{- end }}

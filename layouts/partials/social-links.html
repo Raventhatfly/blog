@@ -1,0 +1,10 @@
+{{- $links := where site.Params.links "url" "!=" "" }}
+{{- with $links }}
+<ul class="link-list">
+  {{- range . }}
+  {{- $u := .url }}
+  {{- $external := or (hasPrefix $u "http") (hasPrefix $u "mailto:") }}
+  <li><a href="{{ cond $external $u (relURL (strings.TrimPrefix "/" $u)) }}"{{ if hasPrefix $u "http" }} rel="me noopener" target="_blank"{{ end }}>{{ .name }}</a></li>
+  {{- end }}
+</ul>
+{{- end }}

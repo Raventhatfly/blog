@@ -1,0 +1,11 @@
+{{- /* Like `figure`, but allowed to extend beyond the text column (for architecture diagrams). */ -}}
+{{- $src := partial "resolve-src.html" (dict "src" (.Get "src") "page" .Page) }}
+{{- $caption := .Get "caption" }}
+{{- $alt := .Get "alt" | default ($caption | markdownify | plainify) }}
+<figure class="figure figure-wide{{ with .Get "class" }} {{ . }}{{ end }}">
+  {{- /* Links to the full-size image by default (handy on phones); override with link="…". */}}
+  <a href="{{ .Get "link" | default $src }}">
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  </a>
+  {{- with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

@@ -1,0 +1,128 @@
+# =============================================================================
+#  Site configuration — almost everything you will want to edit lives here.
+# =============================================================================
+
+# Deployed URL (GitHub Pages project site for github.com/Raventhatfly/blog).
+# The GitHub Actions workflow also sets this automatically at build time
+# (via actions/configure-pages), e.g. if you later add a custom domain.
+baseURL = "https://raventhatfly.github.io/blog/"
+languageCode = "en-us"
+title = "Feiyang's Log"
+
+# Word counts / reading time work for Chinese & mixed-language posts too.
+hasCJKLanguage = true
+enableRobotsTXT = true
+enableGitInfo = false
+# Show tag names exactly as written ("world-models", not "World-Models").
+titleCaseStyle = "none"
+
+[pagination]
+  pagerSize = 12
+
+[params]
+  description = "Notes on Robotics, Embodied AI, World Models, and Machine Learning."
+  author = "Feiyang Wu"
+  # Year shown in the footer copyright line ("© 2026 Feiyang Wu").
+  copyrightStartYear = 2026
+  # Which content sections show up on the homepage / archive / search.
+  mainSections = ["posts"]
+  dateFormat = "January 2, 2006"
+  # Defaults for every post (can be overridden in a post's front matter).
+  showToc = true          # collapsible "Table of Contents" at the top of a post
+  tocOpen = false         # start expanded?
+  showCitation = true     # "Cited as" + BibTeX block at the end of a post
+  showReadingTime = true
+
+  # ---- Homepage intro (Markdown allowed) -----------------------------------
+  [params.home]
+    title = "Welcome"
+    content = """
+Hi, I'm Feiyang.
+
+I use this blog to document my notes and thoughts on robotics, embodied AI, \
+world models, and machine learning.
+"""
+
+  # ---- Links shown on the About page. Leave url = "" to hide a link. -------
+  [[params.links]]
+    name = "GitHub"
+    url = "https://github.com/Raventhatfly"
+  [[params.links]]
+    name = "Google Scholar"
+    url = ""   # TODO: e.g. "https://scholar.google.com/citations?user=<id>"
+  [[params.links]]
+    name = "Email"
+    url = "mailto:feiyangwu@fas.harvard.edu"
+  [[params.links]]
+    name = "RSS"
+    url = "/index.xml"
+
+# ---- Top navigation -----------------------------------------------------------
+[menus]
+  [[menus.main]]
+    name = "Search"
+    pageRef = "/search"
+    weight = 10
+  [[menus.main]]
+    name = "Tags"
+    pageRef = "/tags"
+    weight = 20
+  [[menus.main]]
+    name = "Archive"
+    pageRef = "/archive"
+    weight = 30
+  [[menus.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 40
+
+[taxonomies]
+  tag = "tags"
+
+[permalinks]
+  posts = "/posts/:year-:month-:day-:slug/"
+
+# The homepage also emits /index.json, which powers client-side search.
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML"]
+  term = ["HTML", "RSS"]
+
+[services.rss]
+  limit = 30
+
+[sitemap]
+  changeFreq = "monthly"
+
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false
+  [markup.highlight]
+    noClasses = false      # colors come from assets/css/syntax.css
+    lineNos = false
+    tabWidth = 4
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true        # allow raw HTML inside Markdown
+    [markup.goldmark.parser]
+      # Lets the image render hook turn a stand-alone image into a <figure>.
+      wrapStandAloneImageWithinParagraph = false
+      [markup.goldmark.parser.attribute]
+        block = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.typographer]
+        disable = false
+      # Keep LaTeX untouched by Markdown; rendered by KaTeX at build time
+      # (see layouts/_default/_markup/render-passthrough.html).
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)'], ['$', '$']]
+
+[minify]
+  [minify.tdewolff.html]
+    keepWhitespace = false

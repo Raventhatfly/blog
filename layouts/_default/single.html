@@ -1,0 +1,39 @@
+{{- define "main" }}
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}{{ if .Draft }} <span class="draft-label">draft</span>{{ end }}</h1>
+    {{- with .Params.subtitle }}<p class="post-subtitle">{{ . | markdownify }}</p>{{ end }}
+    {{- if .IsPage }}
+    <div class="post-meta">{{ partial "post-meta.html" . }}</div>
+    {{- partial "tags.html" . }}
+    {{- end }}
+  </header>
+
+  {{- with .Params.notice }}
+  <aside class="post-notice">{{ . | markdownify }}</aside>
+  {{- end }}
+
+  {{- if .IsPage }}{{ partial "toc.html" . }}{{ end }}
+
+  <div class="post-content">
+    {{ partial "content.html" . }}
+  </div>
+
+  {{- if and .IsPage (in site.Params.mainSections .Type) }}
+  <footer class="post-footer">
+    {{- partial "citation.html" . }}
+    {{- $prev := .PrevInSection }}{{ $next := .NextInSection }}
+    {{- if or $prev $next }}
+    <nav class="post-nav">
+      {{- with $next }}
+      <a class="post-nav-prev" href="{{ .RelPermalink }}"><span class="label">&larr; Newer</span><span class="title">{{ .Title }}</span></a>
+      {{- else }}<span></span>{{ end }}
+      {{- with $prev }}
+      <a class="post-nav-next" href="{{ .RelPermalink }}"><span class="label">Older &rarr;</span><span class="title">{{ .Title }}</span></a>
+      {{- end }}
+    </nav>
+    {{- end }}
+  </footer>
+  {{- end }}
+</article>
+{{- end }}

@@ -1,0 +1,10 @@
+{{- /* Date · reading time. Used on the homepage list and article header. */ -}}
+{{- $parts := slice }}
+{{- if not .Date.IsZero }}
+  {{- $parts = $parts | append (printf `<time datetime="%s">%s</time>` (.Date.Format "2006-01-02") (.Date.Format (site.Params.dateFormat | default "January 2, 2006"))) }}
+{{- end }}
+{{- if and (.Param "showReadingTime") (gt .ReadingTime 0) }}
+  {{- $parts = $parts | append (printf "%d min read" .ReadingTime) }}
+{{- end }}
+{{- with .Params.author }}{{ $parts = $parts | append . }}{{ end }}
+{{- delimit $parts " &middot; " | safeHTML -}}

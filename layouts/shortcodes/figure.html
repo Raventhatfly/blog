@@ -1,0 +1,13 @@
+{{- /*
+  {{< figure src="/images/x.png" caption="Overview of …" alt="…" width="80%" link="…" >}}
+  `caption` accepts Markdown, including links and inline $math$.
+*/ -}}
+{{- $src := partial "resolve-src.html" (dict "src" (.Get "src") "page" .Page) }}
+{{- $caption := .Get "caption" }}
+{{- $alt := .Get "alt" | default ($caption | markdownify | plainify) }}
+<figure class="figure{{ with .Get "class" }} {{ . }}{{ end }}">
+  {{- with .Get "link" }}<a href="{{ . }}">{{ end }}
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async"{{ with .Get "width" }} style="width: {{ . }}"{{ end }}>
+  {{- if .Get "link" }}</a>{{ end }}
+  {{- with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

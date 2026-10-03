@@ -1,0 +1,20 @@
+{{- if .Param "showCitation" }}
+{{- $author := .Params.author | default site.Params.author }}
+{{- $names := split $author " " }}
+{{- $first := index (split (urlize .Title) "-") 0 }}
+{{- $key := printf "%s%s%s" (index $names (sub (len $names) 1) | lower) (.Date.Format "2006") $first | replaceRE "[^a-z0-9]" "" }}
+<section class="citation">
+  <h2 id="citation">Citation</h2>
+  <p>Cited as:</p>
+  <blockquote class="cite-plain">{{ $author }}. ({{ .Date.Format "Jan 2006" }}). {{ .Title }}{{ if not (findRE `[.?!]$` .Title) }}.{{ end }} <em>{{ site.Title }}</em>. {{ .Permalink }}</blockquote>
+  <p>Or</p>
+<pre class="cite-bibtex"><code>@article{ {{- $key }},
+  title   = "{{ .Title }}",
+  author  = "{{ $author }}",
+  journal = "{{ site.Title }}",
+  year    = "{{ .Date.Format "2006" }}",
+  month   = "{{ .Date.Format "Jan" }}",
+  url     = "{{ .Permalink }}"
+}</code></pre>
+</section>
+{{- end }}

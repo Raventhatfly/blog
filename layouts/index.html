@@ -1,0 +1,17 @@
+{{- define "main" }}
+{{- with site.Params.home }}
+<section class="home-intro">
+  {{- with .title }}<h1>{{ . }}</h1>{{ end }}
+  {{- with .content }}<div class="home-intro-body">{{ . | markdownify }}</div>{{ end }}
+</section>
+{{- end }}
+
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $paginator := .Paginate $pages }}
+<section class="post-list">
+  {{- range $paginator.Pages }}
+  {{- partial "post-entry.html" . }}
+  {{- end }}
+</section>
+{{- partial "pagination.html" $paginator }}
+{{- end }}

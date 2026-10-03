@@ -1,0 +1,5 @@
+{{- $u := urls.Parse .Destination -}}
+{{- $href := .Destination -}}
+{{- if and (not $u.IsAbs) (hasPrefix .Destination "/") -}}{{ $href = relURL (strings.TrimPrefix "/" .Destination) }}{{- end -}}
+<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $u.IsAbs }} rel="noopener" target="_blank"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- /* keep no trailing whitespace */ -}}

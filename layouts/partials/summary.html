@@ -1,0 +1,7 @@
+{{- /* Front-matter `summary` or `description` wins; otherwise the auto summary. */ -}}
+{{- $s := .Params.summary | default .Description -}}
+{{- if $s -}}
+  {{- $s | markdownify | plainify -}}
+{{- else -}}
+  {{- .Summary | plainify | htmlUnescape | truncate 280 -}}
+{{- end -}}

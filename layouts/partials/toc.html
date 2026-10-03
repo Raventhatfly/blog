@@ -1,0 +1,6 @@
+{{- if and (.Param "showToc") (gt (len .TableOfContents) 80) (gt .WordCount 300) }}
+<details class="toc"{{ if .Param "tocOpen" }} open{{ end }}>
+  <summary>Table of Contents</summary>
+  <div class="toc-body">{{ .TableOfContents }}</div>
+</details>
+{{- end }}

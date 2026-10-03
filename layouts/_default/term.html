@@ -1,0 +1,8 @@
+{{- define "main" }}
+<header class="page-header">
+  <p class="page-kicker"><a href="{{ .Parent.RelPermalink }}">Tags</a></p>
+  <h1>{{ .Title }}</h1>
+  <p class="page-sub">{{ len .Pages }} {{ cond (eq (len .Pages) 1) "post" "posts" }}</p>
+</header>
+{{- partial "archive-list.html" .Pages }}
+{{- end }}

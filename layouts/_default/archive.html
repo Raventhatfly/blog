@@ -1,0 +1,9 @@
+{{- define "main" }}
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+  <p class="page-sub">{{ len $pages }} {{ cond (eq (len $pages) 1) "post" "posts" }}</p>
+</header>
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- partial "archive-list.html" $pages }}
+{{- end }}

@@ -1,0 +1,8 @@
+<article class="post-entry">
+  <h2 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ if .Draft }} <span class="draft-label">draft</span>{{ end }}</h2>
+  <p class="entry-summary">{{ partial "summary.html" . }}</p>
+  <footer class="entry-meta">
+    {{- if not .Date.IsZero }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (site.Params.dateFormat | default "January 2, 2006") }}</time>{{ end }}
+    {{- with .GetTerms "tags" }} <span class="sep">&middot;</span> {{ range $i, $t := . }}{{ if $i }}, {{ end }}<a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle }}</a>{{ end }}{{ end }}
+  </footer>
+</article>

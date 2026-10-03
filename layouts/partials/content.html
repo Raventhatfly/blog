@@ -1,0 +1,26 @@
+{{- /*
+  Renders .Content, with one safety net for display math.
+
+  Goldmark parses `$$ … $$` blocks *inside* paragraphs, so Markdown block
+  syntax wins first: a line containing only `=` turns the previous line into a
+  heading, `- x` / `+ x` / `1. x` start lists, and a blank line ends the block.
+  When a post contains such a block, we re-render it with every multi-line
+  `$$ … $$` block joined onto one line (LaTeX treats newlines as spaces).
+*/ -}}
+{{- $blockRE := `(?ms)^[ \t]*\$\$[ \t]*\n.*?\n[ \t]*\$\$[ \t]*$` }}
+{{- $riskyRE := `(?m)^[ \t]*([=+*>#|-]|\d+[.)]|$)` }}
+{{- $raw := .RawContent }}
+{{- $needsFix := false }}
+{{- range findRE $blockRE $raw }}
+  {{- $inner := . | replaceRE `^\s*\$\$[ \t]*\n` "" | replaceRE `\n[ \t]*\$\$\s*$` "" }}
+  {{- if findRE $riskyRE $inner 1 }}{{ $needsFix = true }}{{ end }}
+{{- end }}
+{{- if $needsFix }}
+  {{- $src := string .RenderShortcodes }}
+  {{- range findRE $blockRE $src }}
+    {{- $src = replace $src . (replaceRE `[ \t]*\n[ \t]*` " " . | printf "\n%s\n") }}
+  {{- end }}
+  {{- .RenderString (dict "display" "block") $src }}
+{{- else }}
+  {{- .Content }}
+{{- end }}

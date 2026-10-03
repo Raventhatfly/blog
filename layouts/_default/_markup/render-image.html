@@ -1,0 +1,10 @@
+{{- $src := partial "resolve-src.html" (dict "src" .Destination "page" .Page) }}
+{{- if .IsBlock }}
+{{- $caption := .Title | default .Text }}
+<figure class="figure">
+  <img src="{{ $src }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
+  {{- with $caption }}<figcaption>{{ . | safeHTML }}</figcaption>{{ end }}
+</figure>
+{{- else -}}
+<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+{{- end }}
