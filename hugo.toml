@@ -49,7 +49,7 @@ world models, and machine learning.
     url = "https://github.com/Raventhatfly"
   [[params.links]]
     name = "Google Scholar"
-    url = ""   # TODO: e.g. "https://scholar.google.com/citations?user=<id>"
+    url = "https://scholar.google.com/citations?user=7d2oto0AAAAJ"
   [[params.links]]
     name = "Email"
     url = "mailto:feiyangwu@fas.harvard.edu"
